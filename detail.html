@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <style>
+        .crumbs {
+            font-size: 14px;
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-default" id="nav">
+           
+        </nav>
+        <div style="text-align:center;">
+            <h4 class="crumbs" style="text-align:left;" id="position"></h4>
+            <h3 id='title'>OSX Mojave 编译 & 源码调试 openJdk 8</h3>
+            <div style="font-size: 14px; color: #999;" id="publishTime">
+            </div>
+
+            <p id="author">
+                
+            </p>
+        </div>
+        <div class="content">
+            <div style="text-align: center;">
+                <img src="http://placehold.it/170x100/ff3333/ffffff?text=like%20you" alt="" id="cover">
+            </div>
+            <div id="content">
+                
+            </div>
+        <hr>
+        <div class="footer" style="text-align:center;font-size: 14px; color: #999;margin:10px 0;">
+            首页 | 主站 | GitHub | Powered by hexo | Theme xoxo
+        </div>
+    </div>
+</body>
+<script src="./js/jquery.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+<script src="./js/axios.js"></script>
+<script src="./utils/request.js"></script>
+<script src="./js/common.js"></script>
+<script>
+    $('#nav').load('./common.html', function () {
+		loadCate();
+	})
+
+    let { id } = searchParam(location.href)
+    async function getCartoon() {
+        let data = await axios.get(`/getCartoon?id=${id}`)
+        let {title,content,author,cover,publishTime,name} = data[0]
+        cover.indexOf('http') == -1 && (cover='http://localhost:6898/'+cover)
+        $('#title').html(title)
+        $('#content').html(content)
+        $('#author').html(author)
+        $('#cover').attr('src',cover).css({width:'360px',height:'276.75px'})
+        let publish = `${publishTime} / 分类: ${name} / 点赞：888`
+        $('#publishTime').html(publish)
+        let position = `当前位置：<a href='/'>首页</a> / ${name} / ${title}`
+        $('#position').html(position)
+    }
+    getCartoon()
+</script>
+
+</html>
